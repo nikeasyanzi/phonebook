@@ -1,19 +1,20 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "phonebook_hash.h"
-#define TABLE_SIZE   2^17	//estimated, since we have 349900 line in word.txt  we allocate 2^17=131072
+#define TABLE_SIZE   131072	//estimated, since we have 349900 line in word.txt  we allocate 2^17=131072
 //total size = 2^17 * 24 byte 
 
 /* FILL YOUR OWN IMPLEMENTATION HERE! */
-entry *findName(char lastname[], entry *pHead)
+entry *findName(char lastname[], entry **pHead)
  {
 
  	 unsigned int idx=BKDRhash(lastname);
-
+ 	// printf("idx=%d\n ",idx);
     /* TODO: implement */
      
-     entry *ptr=&pHead[idx];
+     entry *ptr=pHead[idx];
      
      while (ptr != NULL) {
         if (strcasecmp(lastname, ptr->lastName) == 0)
@@ -23,27 +24,21 @@ entry *findName(char lastname[], entry *pHead)
     return NULL;
 }
 
-entry *append(char lastName[], entry *e)
+entry *append(char lastName[], entry *e[])
 {
 	unsigned int idx=BKDRhash(lastName);
-
-	entry *ptr=&e[idx];
-	if(ptr==NULL){
-		ptr = (entry *) malloc(sizeof(entry));
-	}
-
-	else {
-
-		while (ptr->pNext != NULL) {
-			ptr=ptr->pNext;
-		}
-		ptr->pNext = (entry *) malloc(sizeof(entry));
+	//if (idx==78128) printf("idx=%d\n",idx);
+	entry *ptr= e[idx];
+	while (ptr->pNext != NULL) {
 		ptr=ptr->pNext;
 	}
-	strcpy(ptr->lastName, lastName);
-	ptr->pNext = NULL;
+		ptr->pNext = (entry *) malloc(sizeof(entry));
+		strcpy(ptr->lastName, lastName);
+		ptr=ptr->pNext;
+		ptr->pNext = NULL;
 
-	return e;
+	e[idx]=ptr;
+	return ptr;
 }
 
 unsigned int BKDRhash(char *key)
@@ -57,8 +52,8 @@ unsigned int BKDRhash(char *key)
 		i++;
 	}
 
-	//return hash % TABLE_SIZE;
-	return hash & 0X0001FFFF;
+	return hash >> 17;
+	//return hash & 0X0001FFFF;
 }
 
 

@@ -24,13 +24,13 @@ typedef struct __PHONE_BOOK_DETAIL {
 typedef struct __PHONE_BOOK_ENTRY {
     char lastName[MAX_LAST_NAME_SIZE];
 
-    __PHONE_BOOK_DETAIL detail;
+    __PHONE_BOOK_DETAIL *detail;
 
     struct __PHONE_BOOK_ENTRY *pNext;
 } entry;
 
-entry *findName(char lastname[], entry *pHead);
-entry *append(char lastName[], entry *e);
+entry *findName(char lastname[], entry **pHead);
+entry *append(char lastName[], entry *e[]);
 unsigned int BKDRhash(char *key);
 
 #endif

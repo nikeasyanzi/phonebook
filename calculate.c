@@ -20,21 +20,24 @@ int main(void)
 				printf("run 'make run' longer to get enough information\n\n");
 				exit(0);
 			}
-			fscanf(fp, "%s %s %lf %lf\n", append, find,&orig_a, &orig_f);
+			fscanf(fp, "%s %s %lf %lf\n", append, find, &orig_a, &orig_f);
 			sum_a[j] += orig_a;
 			sum_f[j] += orig_f;
 		}
 		fclose(fp);
+	    printf("append() findName() %lf %lf\n", sum_a[j] / 100.0, sum_f[j] / 100.0);
 	}
 
 	FILE *output = fopen("output.txt", "w");
-	if (!output) {
-		printf("ERROR opening outputut \n");
+	if (!output) { 
+		printf("ERROR opening output.txt\n");
 		exit(0);
 	}
 
 	fprintf(output, "append() %lf %lf %lf\n", sum_a[0] / 100.0, sum_a[1] / 100.0, sum_a[2]/100.0);
-	fprintf(output, "findName() %lf %lf %lf", sum_f[0] / 100.0, sum_f[1] / 100.0),sum_f[2]/100.0;
+	fprintf(output, "findName() %lf %lf %lf", sum_f[0] / 100.0, sum_f[1] / 100.0, sum_f[2]/100.0);
+	printf("append() %lf %lf %lf\n", sum_a[0] / 100.0, sum_a[1] / 100.0, sum_a[2]/100.0);
+	printf("findName() %lf %lf %lf\n", sum_f[0] / 100.0, sum_f[1] / 100.0,sum_f[2]/100.0);
 	fclose(output);
 
 	/*
